@@ -1,0 +1,35 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: #111827;
+}
+
+/* INPUT */
+input, select {
+  outline: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  transition: 0.25s;
+}
+
+input:focus, select:focus {
+  border-color: #3b82f6;
+}
+
+/* BUTTON */
+button {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.02);
+}
