@@ -7,21 +7,26 @@ const OpenAI = require("openai");
 
 const app = express();
 
-// 🔥 CONFIG
+/* ================= ENV CONFIG ================= */
+const PORT = process.env.PORT || 5000;
+
+/* ================= OPENAI ================= */
 const openai = new OpenAI({
-  apiKey: "YOUR_OPENAI_API_KEY" // 👈 replace this
+  apiKey: process.env.OPENAI_API_KEY
 });
 
-// MIDDLEWARE
-app.use(cors());
+/* ================= MIDDLEWARE ================= */
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 
-// DB
-mongoose.connect("mongodb://127.0.0.1:27017/jobtracker")
+/* ================= DATABASE ================= */
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-// MODELS
+/* ================= MODELS ================= */
 const User = mongoose.model("User", {
   name: String,
   email: String,
@@ -35,21 +40,22 @@ const Job = mongoose.model("Job", {
   status: String
 });
 
-// AUTH MIDDLEWARE
+/* ================= AUTH ================= */
 const auth = (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) return res.send({ message: "No token" });
+
+  if (!token) return res.status(401).json({ message: "No token" });
 
   try {
-    const decoded = jwt.verify(token, "secretkey");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secretkey");
     req.userId = decoded.id;
     next();
-  } catch {
-    res.send({ message: "Invalid token" });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 
-// ================= AUTH =================
+/* ================= AUTH ROUTES ================= */
 
 // SIGNUP
 app.post("/signup", async (req, res) => {
@@ -60,7 +66,7 @@ app.post("/signup", async (req, res) => {
   const user = new User({ name, email, password: hashed });
   await user.save();
 
-  res.send({ message: "User created" });
+  res.json({ message: "User created" });
 });
 
 // LOGIN
@@ -69,20 +75,22 @@ app.post("/login", async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (!user) return res.send({ message: "User not found" });
+  if (!user) return res.json({ message: "User not found" });
 
   const match = await bcrypt.compare(password, user.password);
 
-  if (!match) return res.send({ message: "Wrong password" });
+  if (!match) return res.json({ message: "Wrong password" });
 
-  const token = jwt.sign({ id: user._id }, "secretkey");
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET || "secretkey"
+  );
 
-  res.send({ message: "Login success", token });
+  res.json({ message: "Login success", token });
 });
 
-// ================= JOB =================
+/* ================= JOB ROUTES ================= */
 
-// ADD JOB
 app.post("/add-job", auth, async (req, res) => {
   const job = new Job({
     userId: req.userId,
@@ -90,23 +98,20 @@ app.post("/add-job", auth, async (req, res) => {
   });
 
   await job.save();
-  res.send(job);
+  res.json(job);
 });
 
-// GET JOBS
 app.get("/jobs", auth, async (req, res) => {
   const jobs = await Job.find({ userId: req.userId });
-  res.send(jobs);
+  res.json(jobs);
 });
 
-// DELETE
 app.delete("/delete-job/:id", auth, async (req, res) => {
   await Job.findByIdAndDelete(req.params.id);
-  res.send({ message: "Deleted" });
+  res.json({ message: "Deleted" });
 });
 
-// ================= AI =================
-
+/* ================= AI ================= */
 app.post("/ai-suggestion", async (req, res) => {
   try {
     const { role, status } = req.body;
@@ -129,12 +134,11 @@ app.post("/ai-suggestion", async (req, res) => {
     });
 
   } catch (err) {
-    console.log(err);
-    res.status(500).send({ message: "AI error" });
+    res.status(500).json({ message: "AI error" });
   }
 });
 
-// SERVER
-app.listen(5000, () => {
-  console.log("Server running on 5000");
+/* ================= START SERVER ================= */
+app.listen(PORT, () => {
+  console.log("Server running on", PORT);
 });
