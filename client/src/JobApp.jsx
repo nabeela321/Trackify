@@ -1,337 +1,225 @@
 import { useState, useEffect } from "react";
 
-function JobApp({ setIsLoggedIn }) {
+const BASE_URL = "https://trackify-mm00.onrender.com";
+
+function JobApp({ onLogout }) {
   const [jobs, setJobs] = useState([]);
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
-
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
+  const [reason, setReason] = useState("");
+  const [editId, setEditId] = useState(null);
 
   const token = localStorage.getItem("token");
 
+  // 🔹 Fetch jobs
   const getJobs = async () => {
-    const res = await fetch("http://localhost:5000/jobs", {
-      headers: { Authorization: token }
-    });
-    const data = await res.json();
-    setJobs(Array.isArray(data) ? data : []);
+    try {
+      const res = await fetch(`${BASE_URL}/jobs`, {
+        headers: { Authorization: token }
+      });
+
+      const data = await res.json();
+      setJobs(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     getJobs();
   }, []);
 
+  // 🔹 Add / Update job
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:5000/add-job", {
-      method: "POST",
+    const url = editId
+      ? `${BASE_URL}/update-job/${editId}`
+      : `${BASE_URL}/add-job`;
+
+    const method = editId ? "PUT" : "POST";
+
+    await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
         Authorization: token
       },
-      body: JSON.stringify({ company, role, status })
+      body: JSON.stringify({ company, role, status, reason })
     });
 
     setCompany("");
     setRole("");
     setStatus("");
+    setReason("");
+    setEditId(null);
+
     getJobs();
   };
 
+  // 🔹 Delete job
   const deleteJob = async (id) => {
-    await fetch(`http://localhost:5000/delete-job/${id}`, {
+    await fetch(`${BASE_URL}/delete-job/${id}`, {
       method: "DELETE",
       headers: { Authorization: token }
     });
+
     getJobs();
   };
 
-  // 🎯 STATUS COLOR
-  const getStatusColor = (status) => {
-    if (status === "Applied") return "#38bdf8";
-    if (status === "Interview") return "#facc15";
-    if (status === "Rejected") return "#f87171";
-    return "#94a3b8";
-  };
-
-  // 🤖 SMART SUGGESTION (FREE AI)
-  const getTip = (job) => {
-    if (job.status === "Rejected") {
-      return `Improve ${job.role} skills & build projects`;
-    }
-    if (job.status === "Interview") {
-      return `Practice interview questions for ${job.role}`;
-    }
-    return "Follow up after a few days";
-  };
-
-  // 🔍 FILTER LOGIC
-  const filteredJobs = jobs
-    .filter(j => filter === "All" || j.status === filter)
-    .filter(j =>
-      j.company.toLowerCase().includes(search.toLowerCase())
-    );
-
-  // 📊 STATS
-  const total = jobs.length;
-  const applied = jobs.filter(j => j.status === "Applied").length;
-  const interview = jobs.filter(j => j.status === "Interview").length;
-  const rejected = jobs.filter(j => j.status === "Rejected").length;
-
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.container}>
+    <div style={styles.container}>
+      {/* Header */}
+      <div style={styles.header}>
+        <h1 style={styles.logo}>Trackify</h1>
+        <button style={styles.logout} onClick={onLogout}>
+          Logout
+        </button>
+      </div>
 
+      {/* Form */}
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <input
+          placeholder="Company"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          style={styles.input}
+        />
 
-        {/* HEADER */}
-        <div style={styles.header}>
-          <h1 style={styles.title}>💼 Trackify</h1>
-          
+        <input
+          placeholder="Role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          style={styles.input}
+        />
 
-          <button style={styles.logout} onClick={() => {
-            localStorage.removeItem("token");
-            setIsLoggedIn(false);
-          }}>
-            Logout
-          </button>
-        </div>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          style={styles.input}
+        >
+          <option value="">Status</option>
+          <option>Applied</option>
+          <option>Interview</option>
+          <option>Rejected</option>
+        </select>
 
-        {/* STATS */}
-        <div style={styles.stats}>
-          <div style={styles.statCard}>Total: {total}</div>
-          <div style={styles.statCard}>Applied: {applied}</div>
-          <div style={styles.statCard}>Interview: {interview}</div>
-          <div style={styles.statCard}>Rejected: {rejected}</div>
-        </div>
+        <select
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          style={styles.input}
+        >
+          <option value="">Reason</option>
+          <option value="lack of skills">Lack of Skills</option>
+          <option value="communication">Communication</option>
+          <option value="technical">Technical</option>
+        </select>
 
-        {/* SEARCH + FILTER */}
-        <div style={styles.searchRow}>
-          <input
-            style={styles.input}
-            placeholder="Search company..."
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <button style={styles.button}>
+          {editId ? "Update Job" : "Add Job"}
+        </button>
+      </form>
 
-          <select
-            style={styles.input}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option>All</option>
-            <option>Applied</option>
-            <option>Interview</option>
-            <option>Rejected</option>
-          </select>
-        </div>
-
-        {/* FORM */}
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <input
-            style={styles.input}
-            placeholder="Company"
-            onChange={(e) => setCompany(e.target.value)}
-          />
-
-          <input
-            style={styles.input}
-            placeholder="Role"
-            onChange={(e) => setRole(e.target.value)}
-          />
-
-          <select
-            style={styles.input}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option>Status</option>
-            <option>Applied</option>
-            <option>Interview</option>
-            <option>Rejected</option>
-          </select>
-
-          <button style={styles.addBtn}>+ Add</button>
-        </form>
-
-        {/* JOB LIST */}
-        <div style={styles.grid}>
-          {filteredJobs.map(job => (
+      {/* Job List */}
+      <div style={styles.list}>
+        {jobs.length === 0 ? (
+          <p>No jobs found</p>
+        ) : (
+          jobs.map((job) => (
             <div key={job._id} style={styles.card}>
-
-              <div style={styles.top}>
-                <h3 style={styles.company}>{job.company}</h3>
-
-                <span style={{
-                  ...styles.badge,
-                  background: getStatusColor(job.status)
-                }}>
-                  {job.status}
-                </span>
-              </div>
-
-              <p style={styles.role}>{job.role}</p>
-
-              {/* 🤖 AI TIP */}
-              <p style={styles.tip}>
-                🤖 {getTip(job)}
-              </p>
+              <h3>{job.company}</h3>
+              <p>{job.role}</p>
+              <p>Status: {job.status}</p>
+              <p>Reason: {job.reason}</p>
+              <p style={{ color: "green" }}>{job.suggestion}</p>
 
               <button
-                style={styles.deleteBtn}
+                style={styles.edit}
+                onClick={() => {
+                  setCompany(job.company);
+                  setRole(job.role);
+                  setStatus(job.status);
+                  setReason(job.reason);
+                  setEditId(job._id);
+                }}
+              >
+                Edit
+              </button>
+
+              <button
+                style={styles.delete}
                 onClick={() => deleteJob(job._id)}
               >
                 Delete
               </button>
-
             </div>
-          ))}
-        </div>
-
+          ))
+        )}
       </div>
     </div>
   );
 }
 
-/* 🎨 PREMIUM STYLES */
+// 🔹 Styles (simple clean UI)
 const styles = {
-  wrapper: {
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "20px"
-  },
-
   container: {
-    width: "100%",
-    maxWidth: "950px",
-    padding: "25px",
-    borderRadius: "20px",
-    background: "rgba(255,255,255,0.1)",
-    backdropFilter: "blur(20px)",
-    boxShadow: "0 20px 60px rgba(0,0,0,0.4)"
+    padding: "20px",
+    background: "#f5f5f5",
+    minHeight: "100vh"
   },
-
   header: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: "20px",
-    alignItems: "center",
-    color: "white"
-  },
-
-  title: {
-    fontSize: "26px",
-    fontWeight: "600"
-  },
-
-  logout: {
-    background: "#ef4444",
-    color: "white",
-    border: "none",
-    padding: "8px 14px",
-    borderRadius: "8px"
-  },
-
-  stats: {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "20px",
-    flexWrap: "wrap"
-  },
-
-  statCard: {
-    background: "rgba(255,255,255,0.2)",
-    padding: "10px 15px",
-    borderRadius: "10px",
-    color: "white",
-    fontSize: "14px"
-  },
-
-  searchRow: {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "20px",
-    flexWrap: "wrap"
-  },
-
-  form: {
-    display: "flex",
-    gap: "10px",
-    flexWrap: "wrap",
-    marginBottom: "25px"
-  },
-
-  input: {
-    flex: "1",
-    minWidth: "140px",
-    padding: "10px",
-    borderRadius: "8px",
-    background: "rgba(255,255,255,0.2)",
-    color: "white",
-    border: "none"
-  },
-
-  addBtn: {
-    background: "#3b82f6",
-    color: "white",
-    border: "none",
-    padding: "10px 15px",
-    borderRadius: "8px"
-  },
-
-  grid: {
-    display: "grid",
-    gap: "15px"
-  },
-
-  card: {
-    padding: "15px",
-    borderRadius: "14px",
-    background: "rgba(255,255,255,0.1)",
-    backdropFilter: "blur(10px)",
-    color: "white"
-  },
-
-  top: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center"
   },
-
-  company: {
-    fontSize: "18px",
-    fontWeight: "600"
+  logo: {
+    fontSize: "24px",
+    fontWeight: "bold"
   },
-
-  role: {
-    opacity: 0.8,
-    marginTop: "5px"
-  },
-
-  badge: {
-    padding: "5px 10px",
-    borderRadius: "8px",
-    fontSize: "12px",
-    color: "black",
-    fontWeight: "500"
-  },
-
-  tip: {
-    fontSize: "12px",
-    opacity: 0.8,
-    marginTop: "6px"
-  },
-
-  deleteBtn: {
-    marginTop: "10px",
-    background: "#f87171",
+  logout: {
+    background: "red",
+    color: "white",
     border: "none",
-    padding: "6px",
-    borderRadius: "6px",
-    color: "white"
+    padding: "8px",
+    borderRadius: "5px"
   },
-  
+  form: {
+    marginTop: "20px",
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap"
+  },
+  input: {
+    padding: "8px"
+  },
+  button: {
+    padding: "8px",
+    background: "blue",
+    color: "white",
+    border: "none"
+  },
+  list: {
+    marginTop: "20px"
+  },
+  card: {
+    background: "white",
+    padding: "10px",
+    margin: "10px 0",
+    borderRadius: "8px"
+  },
+  edit: {
+    background: "orange",
+    marginRight: "5px",
+    border: "none",
+    padding: "5px"
+  },
+  delete: {
+    background: "red",
+    color: "white",
+    border: "none",
+    padding: "5px"
+  }
 };
 
 export default JobApp;

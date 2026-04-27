@@ -9,61 +9,85 @@ function Signup({ setIsLoginPage }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/signup", {
+      const res = await fetch("https://trackify-mm00.onrender.com/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({ name, email, password })
       });
 
       const data = await res.json();
       alert(data.message);
       setIsLoginPage(true);
-    } catch {
-      alert("Server not running ❌");
+    } catch (err) {
+      console.log(err);
+      alert("Signup failed");
     }
   };
 
   return (
-    <div style={styles.bg}>
-      <div style={styles.card}>
-        <h2>Create Account 🚀</h2>
+    <div style={styles.container}>
+      <form onSubmit={handleSignup} style={styles.card}>
+        <h2 style={styles.title}>Create Account</h2>
 
-        <form onSubmit={handleSignup} style={styles.form}>
-          <input style={styles.input} placeholder="Name" onChange={(e) => setName(e.target.value)} />
-          <input style={styles.input} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          <input style={styles.input} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          <button style={styles.button}>Signup</button>
-        </form>
-      </div>
+        <input
+          style={styles.input}
+          placeholder="Name"
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          style={styles.input}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          style={styles.input}
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button style={styles.button}>Signup</button>
+      </form>
     </div>
   );
 }
 
 const styles = {
-  bg: {
-    height: "100vh",
+  container: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg, #1e293b, #0f172a)"
+    height: "100vh",
+    background: "#0f172a"
   },
   card: {
-    backdropFilter: "blur(15px)",
-    background: "rgba(255,255,255,0.1)",
+    background: "#1e293b",
     padding: "30px",
-    borderRadius: "15px",
-    color: "white",
+    borderRadius: "10px",
     width: "300px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px"
+  },
+  title: {
+    color: "white",
     textAlign: "center"
   },
-  form: { display: "flex", flexDirection: "column", gap: "10px" },
-  input: { padding: "10px", borderRadius: "8px", border: "none" },
+  input: {
+    padding: "10px",
+    borderRadius: "5px",
+    border: "none"
+  },
   button: {
     padding: "10px",
-    borderRadius: "8px",
-    background: "#10b981",
+    background: "#22c55e",
     color: "white",
-    border: "none"
+    border: "none",
+    borderRadius: "5px"
   }
 };
 
