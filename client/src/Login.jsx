@@ -8,11 +8,9 @@ function Login({ setIsLoggedIn }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://trackify-mm00.onrender.com/login", {
+      const res = await fetch("http://localhost:5000/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
 
@@ -24,68 +22,58 @@ function Login({ setIsLoggedIn }) {
       } else {
         alert(data.message);
       }
-    } catch (err) {
-      console.log(err);
-      alert("Login failed");
+    } catch {
+      alert("Server not running ❌");
     }
   };
 
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleLogin} style={styles.card}>
-        <h2 style={styles.title}>Login to Trackify</h2>
+    <div style={styles.bg}>
+      <div style={styles.card}>
+        <h2>Welcome Back 👋</h2>
 
-        <input
-          style={styles.input}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          style={styles.input}
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button style={styles.button}>Login</button>
-      </form>
+        <form onSubmit={handleLogin} style={styles.form}>
+          <input style={styles.input} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+          <input style={styles.input} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <button style={styles.button}>Login</button>
+        </form>
+      </div>
     </div>
   );
 }
 
 const styles = {
-  container: {
+  bg: {
+    height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
-    background: "#0f172a"
+    background: "linear-gradient(135deg, #0f172a, #1e293b)"
   },
   card: {
-    background: "#1e293b",
+    backdropFilter: "blur(15px)",
+    background: "rgba(255,255,255,0.1)",
     padding: "30px",
-    borderRadius: "10px",
-    width: "300px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px"
-  },
-  title: {
+    borderRadius: "15px",
     color: "white",
-    textAlign: "center"
+    width: "300px",
+    textAlign: "center",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
   },
+  form: { display: "flex", flexDirection: "column", gap: "10px" },
   input: {
     padding: "10px",
-    borderRadius: "5px",
+    borderRadius: "8px",
     border: "none"
   },
   button: {
     padding: "10px",
+    borderRadius: "8px",
     background: "#3b82f6",
     color: "white",
     border: "none",
-    borderRadius: "5px"
+    cursor: "pointer",
+    transition: "0.3s"
   }
 };
 
