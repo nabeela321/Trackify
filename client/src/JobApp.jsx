@@ -12,7 +12,7 @@ function JobApp({ setIsLoggedIn }) {
   const token = localStorage.getItem("token");
 
   const getJobs = async () => {
-    const res = await fetch("http://localhost:5000/jobs", {
+    const res = await fetch("https://trackify-a46w.onrender.com/jobs", {
       headers: { Authorization: token }
     });
     const data = await res.json();
@@ -26,7 +26,7 @@ function JobApp({ setIsLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:5000/add-job", {
+    await fetch("https://trackify-a46w.onrender.com/add-job", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ function JobApp({ setIsLoggedIn }) {
   };
 
   const deleteJob = async (id) => {
-    await fetch(`http://localhost:5000/delete-job/${id}`, {
+    await fetch(`https://trackify-a46w.onrender.com/delete-job/${id}`, {
       method: "DELETE",
       headers: { Authorization: token }
     });
