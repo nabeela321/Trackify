@@ -1,16 +1,13 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const OpenAI = require("openai");
 
 const app = express();
 
-// 🔥 CONFIG
-const openai = new OpenAI({
-  apiKey: "YOUR_OPENAI_API_KEY" // 👈 replace this
-});
+
 
 // MIDDLEWARE
 app.use(cors());
@@ -106,32 +103,8 @@ app.delete("/delete-job/:id", auth, async (req, res) => {
 
 // ================= AI =================
 
-app.post("/ai-suggestion", async (req, res) => {
-  try {
-    const { role, status } = req.body;
 
-    const prompt = `
-    I applied for a ${role} job and got ${status}.
-    Give short advice:
-    - what to improve
-    - what to study
-    - how to succeed next time
-    `;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }]
-    });
-
-    res.json({
-      suggestion: response.choices[0].message.content
-    });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ message: "AI error" });
-  }
-});
 
 // SERVER
 app.listen(5000, () => {
