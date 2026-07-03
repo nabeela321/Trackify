@@ -26,3 +26,7 @@ node_modules/
 server/node_modules/
 client/node_modules/
 .env
+.env
+client/.env
+server/.env
+remediate_history.bat
