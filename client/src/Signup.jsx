@@ -1,70 +1,152 @@
 import { useState } from "react";
+import { User, Mail, Lock, Eye, EyeOff, UserPlus, Briefcase, LockKeyhole } from "lucide-react";
+import toast from "react-hot-toast";
 
-function Signup({ setIsLoginPage }) {
+function Signup({ setPage }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
-      const res = await fetch("https://trackify-a46w.onrender.com/signup", {
+      const res = await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password })
       });
 
       const data = await res.json();
-      alert(data.message);
-      setIsLoginPage(true);
+      if (res.ok) {
+        toast.success(data.message || "Account created! You can now log in.");
+        setPage("login");
+      } else {
+        toast.error(data.message || "Signup failed");
+      }
     } catch {
-      alert("Server not running ❌");
+      toast.error("Server not running ❌");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div style={styles.bg}>
-      <div style={styles.card}>
-        <h2>Create Account 🚀</h2>
+    <div className="flex-center animate-fade-in" style={{ height: "100vh", padding: "20px" }}>
+      <div className="glass-panel" style={{ width: "100%", maxWidth: "420px", padding: "40px 30px", textAlign: "center" }}>
+        
+        {/* Premium Logo Placeholder */}
+        <div className="flex-center" style={{ marginBottom: "20px" }}>
+          <div style={{ 
+            background: "linear-gradient(135deg, var(--primary), #818cf8)", 
+            width: "56px", 
+            height: "56px", 
+            borderRadius: "16px", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            boxShadow: "0 8px 20px var(--primary-glow)" 
+          }}>
+            <Briefcase color="white" size={28} strokeWidth={2.5} />
+          </div>
+        </div>
 
-        <form onSubmit={handleSignup} style={styles.form}>
-          <input style={styles.input} placeholder="Name" onChange={(e) => setName(e.target.value)} />
-          <input style={styles.input} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          <input style={styles.input} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          <button style={styles.button}>Signup</button>
+        <h1 style={{ fontSize: "26px", fontWeight: "700", marginBottom: "5px", letterSpacing: "-0.5px" }}>Create Account</h1>
+        <p style={{ color: "var(--text-secondary)", fontSize: "15px", marginBottom: "30px" }}>Join PAATHA and land your next role.</p>
+
+        <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          
+          <div className="premium-input-group">
+            <User size={18} color="var(--text-secondary)" />
+            <input 
+              className="premium-input" 
+              placeholder="Full Name" 
+              type="text"
+              required
+              onChange={(e) => setName(e.target.value)} 
+            />
+          </div>
+
+          <div className="premium-input-group">
+            <Mail size={18} color="var(--text-secondary)" />
+            <input 
+              className="premium-input" 
+              placeholder="Email address" 
+              type="email"
+              required
+              onChange={(e) => setEmail(e.target.value)} 
+            />
+          </div>
+
+          <div className="premium-input-group">
+            <Lock size={18} color="var(--text-secondary)" />
+            <input 
+              className="premium-input" 
+              type={showPassword ? "text" : "password"} 
+              placeholder="Password" 
+              required
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+            <div 
+              onClick={() => setShowPassword(!showPassword)} 
+              style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            >
+              {showPassword ? <EyeOff size={18} color="var(--text-secondary)" /> : <Eye size={18} color="var(--text-secondary)" />}
+            </div>
+          </div>
+
+          <div className="premium-input-group">
+            <LockKeyhole size={18} color="var(--text-secondary)" />
+            <input 
+              className="premium-input" 
+              type={showConfirmPassword ? "text" : "password"} 
+              placeholder="Confirm Password" 
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)} 
+            />
+            <div 
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+              style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            >
+              {showConfirmPassword ? <EyeOff size={18} color="var(--text-secondary)" /> : <Eye size={18} color="var(--text-secondary)" />}
+            </div>
+          </div>
+
+          <button className="premium-btn" disabled={isLoading} style={{ marginTop: "12px", padding: "12px", width: "100%", justifyContent: "center" }}>
+            {isLoading ? "Creating account..." : (
+              <>
+                <UserPlus size={18} />
+                Sign Up
+              </>
+            )}
+          </button>
         </form>
+
+        <div style={{ marginTop: "25px", fontSize: "14px", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <span>Already have an account?</span>
+          <button 
+            onClick={() => setPage("login")}
+            className="secondary-btn"
+            style={{ width: "100%", justifyContent: "center", padding: "10px", marginTop: "5px" }}
+          >
+            Login
+          </button>
+        </div>
+
       </div>
     </div>
   );
 }
-
-const styles = {
-  bg: {
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(135deg, #1e293b, #0f172a)"
-  },
-  card: {
-    backdropFilter: "blur(15px)",
-    background: "rgba(255,255,255,0.1)",
-    padding: "30px",
-    borderRadius: "15px",
-    color: "white",
-    width: "300px",
-    textAlign: "center"
-  },
-  form: { display: "flex", flexDirection: "column", gap: "10px" },
-  input: { padding: "10px", borderRadius: "8px", border: "none" },
-  button: {
-    padding: "10px",
-    borderRadius: "8px",
-    background: "#10b981",
-    color: "white",
-    border: "none"
-  }
-};
 
 export default Signup;

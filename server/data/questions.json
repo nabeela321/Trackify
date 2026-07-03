@@ -1,0 +1,41 @@
+{
+  "frontend": {
+    "topQuestions": ["Explain the Virtual DOM.", "What is closures in JavaScript?", "Difference between let, const, and var?"],
+    "technicalQuestions": ["How does React reconciliation work?", "Explain CSS Grid vs Flexbox.", "What are React Hooks?"],
+    "hrQuestions": ["Why do you want to join us?", "Tell me about a time you handled a difficult bug.", "Where do you see yourself in 5 years?"],
+    "tips": "Focus heavily on JavaScript fundamentals and React performance.",
+    "resources": [
+      { "title": "React Docs", "url": "https://react.dev" },
+      { "title": "Namaste JavaScript", "url": "https://www.youtube.com/playlist?list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP" }
+    ]
+  },
+  "backend": {
+    "topQuestions": ["How does Node.js handle concurrency?", "Explain REST vs GraphQL.", "What is JWT?"],
+    "technicalQuestions": ["How does Event Loop work?", "Explain ACID properties in Databases.", "How to prevent SQL injection?"],
+    "hrQuestions": ["Describe a system you scaled.", "How do you handle technical debt?", "Tell me about a time you missed a deadline."],
+    "tips": "Be ready to draw system design architecture diagrams.",
+    "resources": [
+      { "title": "Node.js Best Practices", "url": "https://github.com/goldbergyoni/nodebestpractices" },
+      { "title": "System Design Primer", "url": "https://github.com/donnemartin/system-design-primer" }
+    ]
+  },
+  "data": {
+    "topQuestions": ["Explain bias-variance tradeoff.", "What is a p-value?", "Difference between supervised and unsupervised learning?"],
+    "technicalQuestions": ["Write a SQL query to find the second highest salary.", "How does Random Forest work?", "Explain overfitting and how to prevent it."],
+    "hrQuestions": ["How do you explain complex data to non-technical stakeholders?", "Tell me about a time your analysis was wrong."],
+    "tips": "Brush up on SQL window functions and basic statistics.",
+    "resources": [
+      { "title": "StatQuest", "url": "https://www.youtube.com/user/joshstarmer" },
+      { "title": "Kaggle Learn", "url": "https://www.kaggle.com/learn" }
+    ]
+  },
+  "general": {
+    "topQuestions": ["Tell me about yourself.", "What are your strengths and weaknesses?", "Why should we hire you?"],
+    "technicalQuestions": ["Explain a project you're proud of.", "How do you learn new technologies?"],
+    "hrQuestions": ["What is your expected salary?", "Are you willing to relocate?", "Do you have any questions for us?"],
+    "tips": "Use the STAR method (Situation, Task, Action, Result) for behavioral questions.",
+    "resources": [
+      { "title": "Behavioral Interview Prep", "url": "https://www.pramp.com/" }
+    ]
+  }
+}

@@ -1,14 +1,19 @@
 import { useState } from "react";
+import { Mail, Lock, LogIn, Briefcase, Eye, EyeOff } from "lucide-react";
+import toast from "react-hot-toast";
 
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
-      const res = await fetch("https://trackify-a46w.onrender.com/login", {
+      const res = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -18,63 +23,96 @@ function Login({ setIsLoggedIn }) {
 
       if (data.token) {
         localStorage.setItem("token", data.token);
+        toast.success("Welcome back!");
         setIsLoggedIn(true);
       } else {
-        alert(data.message);
+        toast.error(data.message || "Login failed");
       }
     } catch {
-      alert("Server not running ❌");
+      toast.error("Server not running ❌");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div style={styles.bg}>
-      <div style={styles.card}>
-        <h2>Welcome Back 👋</h2>
+    <div className="flex-center animate-fade-in" style={{ height: "100vh" }}>
+      <div className="glass-panel" style={{ width: "90%", maxWidth: "400px", padding: "40px 30px", textAlign: "center" }}>
+        
+        {/* Premium Logo Placeholder */}
+        <div className="flex-center" style={{ marginBottom: "20px" }}>
+          <div style={{ 
+            background: "linear-gradient(135deg, var(--primary), #818cf8)", 
+            width: "56px", 
+            height: "56px", 
+            borderRadius: "16px", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            boxShadow: "0 8px 20px var(--primary-glow)" 
+          }}>
+            <Briefcase color="white" size={28} strokeWidth={2.5} />
+          </div>
+        </div>
 
-        <form onSubmit={handleLogin} style={styles.form}>
-          <input style={styles.input} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          <input style={styles.input} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          <button style={styles.button}>Login</button>
+        <h1 style={{ fontSize: "26px", fontWeight: "700", marginBottom: "5px", letterSpacing: "-0.5px" }}>PAATHA</h1>
+        <p style={{ color: "var(--text-secondary)", fontSize: "15px", marginBottom: "35px" }}>Stay on Track. Get Hired.</p>
+
+        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          
+          <div className="premium-input-group">
+            <Mail size={18} color="var(--text-secondary)" />
+            <input 
+              className="premium-input" 
+              placeholder="Email address" 
+              type="email"
+              required
+              onChange={(e) => setEmail(e.target.value)} 
+            />
+          </div>
+
+          <div className="premium-input-group">
+            <Lock size={18} color="var(--text-secondary)" />
+            <input 
+              className="premium-input" 
+              type={showPassword ? "text" : "password"} 
+              placeholder="Password" 
+              required
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+            <div 
+              onClick={() => setShowPassword(!showPassword)} 
+              style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            >
+              {showPassword ? <EyeOff size={18} color="var(--text-secondary)" /> : <Eye size={18} color="var(--text-secondary)" />}
+            </div>
+          </div>
+
+          <button className="premium-btn" disabled={isLoading} style={{ marginTop: "10px", padding: "12px", width: "100%", justifyContent: "center" }}>
+            {isLoading ? "Signing in..." : (
+              <>
+                <LogIn size={18} />
+                Sign In
+              </>
+            )}
+          </button>
         </form>
+
+        <div style={{ marginTop: "30px", fontSize: "14px", color: "var(--text-secondary)" }}>
+          New here?{" "}
+          <span 
+            onClick={() => setPage("signup")}
+            style={{ color: "var(--primary)", cursor: "pointer", fontWeight: "600", transition: "0.2s" }}
+            onMouseOver={(e) => e.target.style.color = "var(--primary-hover)"}
+            onMouseOut={(e) => e.target.style.color = "var(--primary)"}
+          >
+            Create an account
+          </span>
+        </div>
+
       </div>
     </div>
   );
 }
-
-const styles = {
-  bg: {
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(135deg, #0f172a, #1e293b)"
-  },
-  card: {
-    backdropFilter: "blur(15px)",
-    background: "rgba(255,255,255,0.1)",
-    padding: "30px",
-    borderRadius: "15px",
-    color: "white",
-    width: "300px",
-    textAlign: "center",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
-  },
-  form: { display: "flex", flexDirection: "column", gap: "10px" },
-  input: {
-    padding: "10px",
-    borderRadius: "8px",
-    border: "none"
-  },
-  button: {
-    padding: "10px",
-    borderRadius: "8px",
-    background: "#3b82f6",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
-    transition: "0.3s"
-  }
-};
 
 export default Login;

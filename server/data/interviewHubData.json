@@ -1,0 +1,261 @@
+{
+  "companies": [
+    {
+      "id": "google",
+      "name": "Google",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+      "categories": {
+        "HR": ["Why Google?", "Tell me about a time you took a risk and failed."],
+        "Technical": ["Explain how Google Search works.", "Design a distributed cache."],
+        "Coding": ["Invert a Binary Tree", "Find the Longest Substring Without Repeating Characters"],
+        "Behavioral": ["How do you handle disagreements with your manager?"]
+      }
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+      "categories": {
+        "HR": ["Which Amazon Leadership Principle resonates with you the most?", "Tell me about a time you disagreed with a colleague."],
+        "Technical": ["Design a parking lot.", "Explain DynamoDB vs Cassandra."],
+        "Coding": ["Two Sum", "Merge Intervals"],
+        "Behavioral": ["Tell me about a time you had to deliver under a tight deadline."]
+      }
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+      "categories": {
+        "HR": ["Why Microsoft?", "Tell me about a time you learned a new technology."],
+        "Technical": ["Explain Object Oriented Programming.", "Design a URL shortener."],
+        "Coding": ["Reverse a Linked List", "Valid Parentheses"],
+        "Behavioral": ["How do you handle ambiguous requirements?"]
+      }
+    },
+    {
+      "id": "tcs",
+      "name": "TCS",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg",
+      "categories": {
+        "HR": ["Are you willing to relocate?", "Why TCS?", "What are your salary expectations?"],
+        "Technical": ["Explain normalization in DBMS.", "What is polymorphism?"],
+        "Coding": ["Check if string is palindrome", "Find factorial of a number"],
+        "Aptitude": ["A train 120m long passes a man in 6 seconds. Find the speed.", "What is the probability of getting a sum of 9 from two throws of a dice?"]
+      }
+    },
+    {
+      "id": "infosys",
+      "name": "Infosys",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg",
+      "categories": {
+        "HR": ["Where do you see yourself in 5 years?", "What are your strengths and weaknesses?"],
+        "Technical": ["Difference between TCP and UDP.", "What is a primary key?"],
+        "Coding": ["Print Fibonacci series", "Reverse a string"],
+        "Aptitude": ["If 5 cats catch 5 mice in 5 minutes, how many cats are needed to catch 100 mice in 100 minutes?"]
+      }
+    },
+    {
+      "id": "wipro",
+      "name": "Wipro",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Wipro_Logo.svg",
+      "categories": {
+        "HR": ["What do you know about Wipro?", "Are you comfortable working in shifts?"],
+        "Technical": ["Explain the concept of threading.", "What is a virtual function in C++?"],
+        "Coding": ["Armstrong number", "Reverse an integer"],
+        "Aptitude": ["If A and B can do a piece of work in 15 days, and B can do it alone in 20 days. How long will A take to do it?"]
+      }
+    },
+    {
+      "id": "accenture",
+      "name": "Accenture",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Accenture.svg",
+      "categories": {
+        "HR": ["Why Accenture?", "How do you manage stress?"],
+        "Technical": ["Explain Cloud Computing.", "What is RESTful API?"],
+        "Coding": ["Merge two sorted arrays", "Find missing number in array"],
+        "Aptitude": ["Find the next number in the series: 2, 6, 12, 20, 30..."]
+      }
+    }
+  ],
+  "topics": [
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "questions": [
+        { "q": "What is a closure?", "a": "A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment).", "difficulty": "Medium" },
+        { "q": "Difference between let, const, and var?", "a": "var is function scoped and hoisted. let and const are block scoped. const cannot be reassigned.", "difficulty": "Easy" },
+        { "q": "Explain Event Delegation.", "a": "Event delegation allows you to attach a single event listener to a parent element that will fire for all descendants matching a selector.", "difficulty": "Medium" }
+      ],
+      "tips": "Focus heavily on ES6+ features, closures, and the event loop."
+    },
+    {
+      "id": "react",
+      "title": "React",
+      "questions": [
+        { "q": "What is the Virtual DOM?", "a": "The virtual DOM is a programming concept where an ideal, or 'virtual', representation of a UI is kept in memory and synced with the 'real' DOM.", "difficulty": "Medium" },
+        { "q": "Explain useEffect hook.", "a": "The useEffect hook lets you perform side effects in function components (fetching data, subscriptions, manually changing the DOM).", "difficulty": "Medium" }
+      ],
+      "tips": "Understand component lifecycle and hook dependencies deeply."
+    },
+    {
+      "id": "nodejs",
+      "title": "Node.js",
+      "questions": [
+        { "q": "How does Node.js handle concurrency?", "a": "Node.js uses a single-threaded event loop architecture to handle concurrency asynchronously.", "difficulty": "Hard" }
+      ],
+      "tips": "Understand the event loop and asynchronous I/O."
+    },
+    {
+      "id": "express",
+      "title": "Express",
+      "questions": [
+        { "q": "What is middleware?", "a": "Middleware functions have access to the request object, response object, and the next middleware function in the application's request-response cycle.", "difficulty": "Easy" }
+      ],
+      "tips": "Practice writing custom error handling middleware."
+    },
+    {
+      "id": "mongodb",
+      "title": "MongoDB",
+      "questions": [
+        { "q": "What is an index in MongoDB?", "a": "Indexes support the efficient execution of queries in MongoDB by limiting the number of documents it must inspect.", "difficulty": "Medium" }
+      ],
+      "tips": "Know how to optimize queries and use aggregation pipelines."
+    },
+    {
+      "id": "html",
+      "title": "HTML",
+      "questions": [
+        { "q": "What is semantic HTML?", "a": "Semantic HTML implies using HTML tags that convey meaning (like <header>, <article>, <nav>) rather than just presentation (like <div>, <span>).", "difficulty": "Easy" }
+      ],
+      "tips": "Focus on accessibility (a11y) and SEO."
+    },
+    {
+      "id": "css",
+      "title": "CSS",
+      "questions": [
+        { "q": "Explain CSS Flexbox vs Grid.", "a": "Flexbox is designed for 1-dimensional layouts (rows or columns). Grid is designed for 2-dimensional layouts (rows and columns simultaneously).", "difficulty": "Medium" }
+      ],
+      "tips": "Master responsive design techniques."
+    },
+    {
+      "id": "sql",
+      "title": "SQL",
+      "questions": [
+        { "q": "What are joins in SQL?", "a": "A JOIN clause is used to combine rows from two or more tables, based on a related column between them (INNER, LEFT, RIGHT, FULL).", "difficulty": "Easy" }
+      ],
+      "tips": "Practice complex queries on LeetCode or HackerRank."
+    },
+    {
+      "id": "os",
+      "title": "Operating Systems",
+      "questions": [
+        { "q": "What is a deadlock?", "a": "A deadlock is a situation where a set of processes are blocked because each process is holding a resource and waiting for another resource acquired by some other process.", "difficulty": "Hard" }
+      ],
+      "tips": "Understand process scheduling and memory management."
+    },
+    {
+      "id": "dbms",
+      "title": "DBMS",
+      "questions": [
+        { "q": "What are ACID properties?", "a": "ACID stands for Atomicity, Consistency, Isolation, Durability. They ensure database transactions are processed reliably.", "difficulty": "Medium" }
+      ],
+      "tips": "Know the normal forms (1NF, 2NF, 3NF, BCNF)."
+    },
+    {
+      "id": "cn",
+      "title": "Computer Networks",
+      "questions": [
+        { "q": "Difference between TCP and UDP?", "a": "TCP is connection-oriented and reliable. UDP is connectionless and faster but unreliable.", "difficulty": "Medium" }
+      ],
+      "tips": "Understand the OSI model layers."
+    },
+    {
+      "id": "oop",
+      "title": "OOP",
+      "questions": [
+        { "q": "What are the 4 pillars of OOP?", "a": "Encapsulation, Abstraction, Inheritance, and Polymorphism.", "difficulty": "Easy" }
+      ],
+      "tips": "Be ready to model real-world entities."
+    },
+    {
+      "id": "dsa",
+      "title": "DSA",
+      "questions": [
+        { "q": "What is the time complexity of QuickSort?", "a": "Average case: O(N log N). Worst case: O(N^2).", "difficulty": "Medium" }
+      ],
+      "tips": "Practice coding every day to build intuition."
+    }
+  ],
+  "coding": [
+    {
+      "id": "two-sum",
+      "title": "Two Sum",
+      "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+      "input": "nums = [2,7,11,15], target = 9",
+      "output": "[0,1]",
+      "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1].",
+      "difficulty": "Easy",
+      "solution": "Use a Hash Map to store the difference between the target and current element."
+    },
+    {
+      "id": "reverse-linked-list",
+      "title": "Reverse Linked List",
+      "description": "Given the head of a singly linked list, reverse the list, and return the reversed list.",
+      "input": "head = [1,2,3,4,5]",
+      "output": "[5,4,3,2,1]",
+      "explanation": "Traverse the list while changing the next pointer of each node to point to its previous node.",
+      "difficulty": "Easy",
+      "solution": "Iterative: Keep three pointers (prev, curr, next). Update curr.next to prev, then move prev and curr one step forward."
+    },
+    {
+      "id": "lru-cache",
+      "title": "LRU Cache",
+      "description": "Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.",
+      "input": "[\"LRUCache\", \"put\", \"put\", \"get\", \"put\", \"get\", \"put\", \"get\", \"get\", \"get\"]\n[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]",
+      "output": "[null, null, null, 1, null, -1, null, -1, 3, 4]",
+      "explanation": "When the cache is full, remove the least recently used item before adding a new one.",
+      "difficulty": "Medium",
+      "solution": "Use a Hash Map paired with a Doubly Linked List. Map stores key to Node reference. List keeps order of usage."
+    }
+  ],
+  "hr": {
+    "sections": [
+      {
+        "title": "Tell me about yourself",
+        "questions": ["Give a brief 2-minute intro focusing on your professional journey and key skills."]
+      },
+      {
+        "title": "Strengths & weaknesses",
+        "questions": ["What is your greatest strength?", "What is your biggest weakness and how are you improving it?"]
+      },
+      {
+        "title": "Why should we hire you?",
+        "questions": ["Why are you the best fit for this role?", "How can you add value to our team?"]
+      },
+      {
+        "title": "Projects explanation",
+        "questions": ["Walk me through your most complex project.", "What was your specific contribution to this project?"]
+      },
+      {
+        "title": "Resume questions",
+        "questions": ["I see a gap in your employment, can you explain?", "Why did you leave your last job?"]
+      },
+      {
+        "title": "Salary expectations",
+        "questions": ["What are your salary expectations?"]
+      },
+      {
+        "title": "Career goals",
+        "questions": ["Where do you see yourself in 5 years?"]
+      }
+    ]
+  },
+  "resources": [
+    { "title": "Top 50 Behavioral Questions", "type": "Preparation tips", "desc": "A comprehensive list of STAR method questions.", "link": "#" },
+    { "title": "Common Interview Mistakes to Avoid", "type": "Common mistakes", "desc": "Learn what NOT to do during an interview.", "link": "#" },
+    { "title": "Day-Before Interview Checklist", "type": "Interview checklist", "desc": "Make sure you have everything ready.", "link": "#" },
+    { "title": "ATS-Friendly Resume Guidelines", "type": "Resume tips", "desc": "How to beat the bots.", "link": "#" },
+    { "title": "Effective Communication Strategies", "type": "Communication tips", "desc": "Speak clearly and confidently.", "link": "#" }
+  ]
+}
